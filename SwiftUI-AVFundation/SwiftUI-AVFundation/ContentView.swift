@@ -21,6 +21,10 @@ struct ContentView: View {
             .edgesIgnoringSafeArea(.all)
             .alert(isPresented: $errorInfo.showError) { () -> Alert in
                 Alert(title: Text($errorInfo.message.wrappedValue))
+
+        }
+        .onAppear {
+            
         }
     }
 }
@@ -43,6 +47,7 @@ struct VideoView: UIViewRepresentable {
         if let previewLayer = context.coordinator.previewLayer {
             view.layer.addSublayer(previewLayer)
         }
+        context.coordinator.sessionStart()
         return view
     }
     func updateUIView(_ uiView: UIView, context: Context) {
@@ -51,8 +56,11 @@ struct VideoView: UIViewRepresentable {
     func makeCoordinator() -> VideoCoordinator {
         let coordinator = VideoCoordinator(parent: self)
         coordinator.setupAVCaptureSession()
-        coordinator.sessionStart()
         return coordinator
+    }
+
+    static func dismantleUIView(_ uiView: UIView, coordinator: VideoCoordinator) {
+        coordinator.stopSession()
     }
 }
 
@@ -69,7 +77,15 @@ final class VideoCoordinator: NSObject {
     }
 
     func sessionStart() {
-        self.session?.startRunning()
+
+        if session?.isRunning ?? false { return }
+        print("session start")
+        session?.startRunning()
+    }
+
+    func stopSession() {
+        if !(session?.isRunning ?? false) { return }
+        session?.stopRunning()
     }
 
     /// - Tag: CreateCaptureSession
