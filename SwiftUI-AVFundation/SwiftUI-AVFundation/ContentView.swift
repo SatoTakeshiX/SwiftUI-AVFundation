@@ -16,15 +16,16 @@ struct ErrorInfo: Error {
 
 struct ContentView: View {
     @State var errorInfo: ErrorInfo = ErrorInfo(showError: false, message: "")
+    @State var onAppear: Bool = false
     var body: some View {
-        VideoView(showError: $errorInfo.showError, errorMessage: $errorInfo.message)
+        VideoView(showError: $errorInfo.showError, errorMessage: $errorInfo.message, onAppear: $onAppear)
             .edgesIgnoringSafeArea(.all)
             .alert(isPresented: $errorInfo.showError) { () -> Alert in
                 Alert(title: Text($errorInfo.message.wrappedValue))
 
         }
         .onAppear {
-            
+            self.onAppear = true
         }
     }
 }
@@ -40,6 +41,7 @@ struct VideoView: UIViewRepresentable {
     typealias Coordinator = VideoCoordinator
     @Binding var showError: Bool
     @Binding var errorMessage: String
+    @Binding var onAppear: Bool
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         view.layer.masksToBounds = true
@@ -52,6 +54,9 @@ struct VideoView: UIViewRepresentable {
     }
     func updateUIView(_ uiView: UIView, context: Context) {
         context.coordinator.previewLayer?.frame = uiView.layer.bounds
+
+        print(context.coordinator.session.isRunning)
+        print(context.coordinator.previewLayer?.frame)
     }
     func makeCoordinator() -> VideoCoordinator {
         let coordinator = VideoCoordinator(parent: self)
@@ -68,46 +73,76 @@ extension AVCaptureVideoPreviewLayer: ObservableObject {}
 
 final class VideoCoordinator: NSObject {
     var parent: VideoView
-    private var session: AVCaptureSession?
+    let session: AVCaptureSession = AVCaptureSession()
     var previewLayer: AVCaptureVideoPreviewLayer?
     private var videoDataOutput: AVCaptureVideoDataOutput?
     private var videoDataOutputQueue: DispatchQueue?
+    private var captureDevice: AVCaptureDevice?
     init(parent: VideoView) {
         self.parent = parent
     }
 
     func sessionStart() {
-
-        if session?.isRunning ?? false { return }
+        if session.isRunning { return }
         print("session start")
-        session?.startRunning()
+        session.startRunning()
     }
 
     func stopSession() {
-        if !(session?.isRunning ?? false) { return }
-        session?.stopRunning()
+        if !session.isRunning { return }
+        session.stopRunning()
     }
 
     /// - Tag: CreateCaptureSession
     func setupAVCaptureSession() {
-        let captureSession = AVCaptureSession()
-        do {
-            let inputDevice = try self.configureFrontCamera(for: captureSession)
-            self.configureVideoDataOutput(for: inputDevice.device, resolution: inputDevice.resolution, captureSession: captureSession)
-            self.designatePreviewLayer(for: captureSession)
-            session = captureSession
-            return
-        } catch let executionError as NSError {
-            parent.showError = true
-            parent.errorMessage = executionError.localizedDescription
-        } catch {
-            parent.showError = true
-            parent.errorMessage = "An unexpected failure has occured"
+        print(#function)
+        session.sessionPreset = .photo
+        if let availableDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.first {
+            captureDevice = availableDevice
         }
 
-        self.teardownAVCapture()
+        do {
+            let captureDeviceInput = try AVCaptureDeviceInput(device: captureDevice!)
+            session.addInput(captureDeviceInput)
+        } catch let error {
+            print(error.localizedDescription)
+        }
 
-        session = nil
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        self.previewLayer = previewLayer
+
+        let dataOutput = AVCaptureVideoDataOutput()
+        dataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32BGRA]
+
+        if session.canAddOutput(dataOutput) {
+            session.addOutput(dataOutput) // -> ここをコメントアウトしたら、カメラボタンタップで画像を取得できなくなった。しかしカメラのライブ映像はそのまま取得できた。
+        }
+
+        session.commitConfiguration()
+
+        let queue = DispatchQueue(label: "FromF.github.com.AVFoundationSwiftUI.AVFoundation")
+        dataOutput.setSampleBufferDelegate(self, queue: queue)
+
+//        let captureSession = AVCaptureSession()
+//        captureSession.sessionPreset = .photo
+//
+//        do {
+//            let inputDevice = try self.configureFrontCamera(for: captureSession)
+//            self.configureVideoDataOutput(for: inputDevice.device, resolution: inputDevice.resolution, captureSession: captureSession)
+//            self.designatePreviewLayer(for: captureSession)
+//            session = captureSession
+//            return
+//        } catch let executionError as NSError {
+//            parent.showError = true
+//            parent.errorMessage = executionError.localizedDescription
+//        } catch {
+//            parent.showError = true
+//            parent.errorMessage = "An unexpected failure has occured"
+//        }
+//
+//        self.teardownAVCapture()
+//
+//        session = nil
     }
 
     /// - Tag: DesignatePreviewLayer
