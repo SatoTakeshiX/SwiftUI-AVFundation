@@ -18,7 +18,7 @@ final class SimpleVideoCaptureInteractor: NSObject, ObservableObject {
      func setupAVCaptureSession() {
          print(#function)
          captureSession.sessionPreset = .photo
-         if let availableDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.first {
+         if let availableDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .front).devices.first {
              captureDevice = availableDevice
          }
 
@@ -30,6 +30,9 @@ final class SimpleVideoCaptureInteractor: NSObject, ObservableObject {
          }
 
          let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.name = "CameraPreview"
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        previewLayer.backgroundColor = UIColor.black.cgColor
          self.previewLayer = previewLayer
 
          let dataOutput = AVCaptureVideoDataOutput()

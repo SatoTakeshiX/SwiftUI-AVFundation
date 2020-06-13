@@ -17,6 +17,7 @@ struct SimpleVideoCaptureView: View {
         ZStack {
             CALayerView(caLayer: presenter.previewLayer)
         }
+        .edgesIgnoringSafeArea(.all)
         .onAppear {
             self.presenter.apply(inputs: .onAppear)
         }
