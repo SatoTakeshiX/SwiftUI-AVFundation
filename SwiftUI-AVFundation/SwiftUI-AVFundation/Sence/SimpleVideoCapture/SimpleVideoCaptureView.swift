@@ -15,7 +15,7 @@ struct SimpleVideoCaptureView: View {
     var presenter: SimpleVideoCapturePresenter
     var body: some View {
         ZStack {
-            CALayerView(caLayer: $presenter.outputs.layer)
+            CALayerView(caLayer: presenter.layer)
         }
         .onAppear {
             self.presenter.apply(inputs: .onAppear)
@@ -35,7 +35,7 @@ struct SimpleVideoCaptureView_Previews: PreviewProvider {
 
 struct CALayerView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
-    @Binding var caLayer: CALayer
+    var caLayer: CALayer
 
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
