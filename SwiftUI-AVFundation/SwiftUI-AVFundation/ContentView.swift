@@ -18,15 +18,16 @@ struct ContentView: View {
     @State var errorInfo: ErrorInfo = ErrorInfo(showError: false, message: "")
     @State var onAppear: Bool = false
     var body: some View {
-        VideoView(showError: $errorInfo.showError, errorMessage: $errorInfo.message, onAppear: $onAppear)
-            .edgesIgnoringSafeArea(.all)
-            .alert(isPresented: $errorInfo.showError) { () -> Alert in
-                Alert(title: Text($errorInfo.message.wrappedValue))
+        ZStack {
+            VideoView(showError: $errorInfo.showError, errorMessage: $errorInfo.message, onAppear: $onAppear)
 
+                .alert(isPresented: $errorInfo.showError) { () -> Alert in
+                    Alert(title: Text($errorInfo.message.wrappedValue))
+            }
+            Text("dddd")
         }
-        .onAppear {
-            self.onAppear = true
-        }
+        .edgesIgnoringSafeArea(.all)
+
     }
 }
 
@@ -36,27 +37,27 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct VideoView: UIViewRepresentable {
-    typealias UIViewType = UIView
+struct VideoView: UIViewControllerRepresentable {
+    typealias UIViewControllerType = UIViewController
     typealias Coordinator = VideoCoordinator
     @Binding var showError: Bool
     @Binding var errorMessage: String
     @Binding var onAppear: Bool
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView()
-        view.layer.masksToBounds = true
-        context.coordinator.previewLayer?.frame = view.layer.bounds
-        if let previewLayer = context.coordinator.previewLayer {
-            view.layer.addSublayer(previewLayer)
-        }
+    func makeUIViewController(context: Context) -> UIViewController {
+        let viewController = UIViewController()
         context.coordinator.sessionStart()
-        return view
-    }
-    func updateUIView(_ uiView: UIView, context: Context) {
-        context.coordinator.previewLayer?.frame = uiView.layer.bounds
+        if let previewLayer = context.coordinator.previewLayer {
+            viewController.view.layer.addSublayer(previewLayer)
+            previewLayer.frame = viewController.view.layer.frame
+            print("context.coordinator.previewLayer?.frame: make \(context.coordinator.previewLayer?.frame)")
+        }
 
-        print(context.coordinator.session.isRunning)
-        print(context.coordinator.previewLayer?.frame)
+        return viewController
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        context.coordinator.previewLayer?.frame = uiViewController.view.layer.frame
+        print("context.coordinator.previewLayer?.frame: update \(context.coordinator.previewLayer?.frame)")
     }
     func makeCoordinator() -> VideoCoordinator {
         let coordinator = VideoCoordinator(parent: self)

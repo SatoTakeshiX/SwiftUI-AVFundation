@@ -18,6 +18,9 @@
 		30A93030248D287F00A708AA /* AVFoundationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9302F248D287F00A708AA /* AVFoundationVM.swift */; };
 		30A93032248D289B00A708AA /* CALayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93031248D289B00A708AA /* CALayerView.swift */; };
 		30A93034248D28C900A708AA /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93033248D28C900A708AA /* HomeView.swift */; };
+		30A930362494B03800A708AA /* SimpleVideoCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A930352494B03800A708AA /* SimpleVideoCaptureView.swift */; };
+		30A9303A2494B0F500A708AA /* SimpleVideoCapturePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A930392494B0F500A708AA /* SimpleVideoCapturePresenter.swift */; };
+		30A9303C2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9303B2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		30A9302F248D287F00A708AA /* AVFoundationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVFoundationVM.swift; sourceTree = "<group>"; };
 		30A93031248D289B00A708AA /* CALayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerView.swift; sourceTree = "<group>"; };
 		30A93033248D28C900A708AA /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		30A930352494B03800A708AA /* SimpleVideoCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCaptureView.swift; sourceTree = "<group>"; };
+		30A930392494B0F500A708AA /* SimpleVideoCapturePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCapturePresenter.swift; sourceTree = "<group>"; };
+		30A9303B2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCaptureInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,7 @@
 		30A92FFE248D001000A708AA /* SwiftUI-AVFundation */ = {
 			isa = PBXGroup;
 			children = (
+				30A930372494B04E00A708AA /* Sence */,
 				30A92FFF248D001000A708AA /* AppDelegate.swift */,
 				30A93001248D001000A708AA /* SceneDelegate.swift */,
 				30A93003248D001000A708AA /* ContentView.swift */,
@@ -143,6 +150,24 @@
 				30A93023248D001100A708AA /* Info.plist */,
 			);
 			path = "SwiftUI-AVFundationUITests";
+			sourceTree = "<group>";
+		};
+		30A930372494B04E00A708AA /* Sence */ = {
+			isa = PBXGroup;
+			children = (
+				30A930382494B09B00A708AA /* SimpleVideoCapture */,
+			);
+			path = Sence;
+			sourceTree = "<group>";
+		};
+		30A930382494B09B00A708AA /* SimpleVideoCapture */ = {
+			isa = PBXGroup;
+			children = (
+				30A930352494B03800A708AA /* SimpleVideoCaptureView.swift */,
+				30A930392494B0F500A708AA /* SimpleVideoCapturePresenter.swift */,
+				30A9303B2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift */,
+			);
+			path = SimpleVideoCapture;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,9 +304,12 @@
 				30A93032248D289B00A708AA /* CALayerView.swift in Sources */,
 				30A93030248D287F00A708AA /* AVFoundationVM.swift in Sources */,
 				30A93000248D001000A708AA /* AppDelegate.swift in Sources */,
+				30A9303A2494B0F500A708AA /* SimpleVideoCapturePresenter.swift in Sources */,
 				30A93034248D28C900A708AA /* HomeView.swift in Sources */,
+				30A930362494B03800A708AA /* SimpleVideoCaptureView.swift in Sources */,
 				30A93002248D001000A708AA /* SceneDelegate.swift in Sources */,
 				30A93004248D001000A708AA /* ContentView.swift in Sources */,
+				30A9303C2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
