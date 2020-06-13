@@ -13,18 +13,17 @@ import Combine
 final class SimpleVideoCapturePresenter: ObservableObject {
 
     final class Outputs: ObservableObject {
-        var layer: AVCaptureVideoPreviewLayer?
+        var layer: CALayer = CALayer()
     }
 
     enum Inputs {
         case onAppear
         case tappedCameraButton
-        case disAppear
+        case onDisappear
     }
 
     init() {
         self.outputs = Outputs()
-        self.cancellable = interactor.$previewLayer.assign(to: \.layer, on: self.outputs)
     }
 
     var outputs: Outputs
@@ -32,16 +31,23 @@ final class SimpleVideoCapturePresenter: ObservableObject {
     func apply(inputs: Inputs) {
         switch inputs {
             case .onAppear:
+                bind()
                 interactor.startSettion()
             case .tappedCameraButton:
             break
-            case .disAppear:
+            case .onDisappear:
                 interactor.stopSettion()
-                cancellable.cancel()
+                cancellable?.cancel()
         }
     }
 
     // MARK: Privates
-    private var cancellable: Cancellable
+    private var cancellable: Cancellable?
     private let interactor = SimpleVideoCaptureInteractor()
+
+    private func bind() {
+        self.cancellable = interactor.$previewLayer.sink(receiveValue: { (previewLayer) in
+            self.outputs.layer = previewLayer ?? CALayer()
+        })
+    }
 }

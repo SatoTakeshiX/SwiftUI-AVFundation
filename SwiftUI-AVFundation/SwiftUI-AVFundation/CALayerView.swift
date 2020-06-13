@@ -25,7 +25,7 @@ struct CALayerViewController: UIViewControllerRepresentable {
     }
 }
 
-struct CALayerView: UIViewRepresentable {
+struct CALayerView2: UIViewRepresentable {
 
     var caLayer: CALayer
     typealias UIViewType = UIView
