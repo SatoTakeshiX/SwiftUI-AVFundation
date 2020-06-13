@@ -15,7 +15,7 @@ struct SimpleVideoCaptureView: View {
     var presenter: SimpleVideoCapturePresenter
     var body: some View {
         ZStack {
-            CALayerView(caLayer: presenter.layer)
+            CALayerView(caLayer: presenter.previewLayer)
         }
         .onAppear {
             self.presenter.apply(inputs: .onAppear)
