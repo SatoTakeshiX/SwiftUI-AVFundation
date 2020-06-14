@@ -24,6 +24,18 @@ struct SimpleVideoCaptureView: View {
         .onDisappear {
             self.presenter.apply(inputs: .onDisappear)
         }
+        .sheet(isPresented: $presenter.showSheet) {
+            VStack {
+                Image(uiImage: self.presenter.photoImage)
+                .resizable()
+                .frame(width: 200, height: 200)
+                Button(action: {
+                    self.presenter.apply(inputs: .tappedCloseButton)
+                }) {
+                    Text("Close")
+                }
+            }
+        }
     }
 }
 

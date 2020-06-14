@@ -13,12 +13,14 @@ final class SimpleVideoCaptureInteractor: NSObject, ObservableObject {
     private let captureSession = AVCaptureSession()
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
     private var captureDevice: AVCaptureDevice?
+    @Published var showPhoto: Bool = false
+    @Published var photoImage: UIImage?
 
     /// - Tag: CreateCaptureSession
      func setupAVCaptureSession() {
          print(#function)
          captureSession.sessionPreset = .photo
-         if let availableDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .front).devices.first {
+         if let availableDevice = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.first {
              captureDevice = availableDevice
          }
 
@@ -53,11 +55,47 @@ final class SimpleVideoCaptureInteractor: NSObject, ObservableObject {
         if !captureSession.isRunning { return }
         captureSession.stopRunning()
     }
+
+    func takePhoto() {
+        showPhoto = true
+    }
+
+    private func exifOrientationForDeviceOrientation(_ deviceOrientation: UIDeviceOrientation) -> UIImage.Orientation {
+
+        switch deviceOrientation {
+        case .portraitUpsideDown:
+            return .rightMirrored
+
+        case .landscapeLeft:
+            return .downMirrored
+
+        case .landscapeRight:
+            return .upMirrored
+
+        default:
+            return .leftMirrored
+        }
+    }
+    private func exifOrientationForCurrentDeviceOrientation() -> UIImage.Orientation {
+        return exifOrientationForDeviceOrientation(UIDevice.current.orientation)
+    }
 }
 
 
 extension SimpleVideoCaptureInteractor: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        if showPhoto {
+            showPhoto = false
+            if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+                let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+                let context = CIContext()
 
+                let imageRect = CGRect(x: 0, y: 0, width: CVPixelBufferGetWidth(pixelBuffer), height: CVPixelBufferGetHeight(pixelBuffer))
+
+                if let image = context.createCGImage(ciImage, from: imageRect) {
+                    photoImage = UIImage(cgImage: image, scale: UIScreen.main.scale, orientation: exifOrientationForCurrentDeviceOrientation())
+                }
+            }
+        }
     }
 }

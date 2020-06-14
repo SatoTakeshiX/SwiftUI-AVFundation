@@ -11,20 +11,30 @@ import AVKit
 import Combine
 
 final class SimpleVideoCapturePresenter: ObservableObject {
-
-    var previewLayer: CALayer {
-        return interactor.previewLayer!
-    }
-
     enum Inputs {
         case onAppear
         case tappedCameraButton
+        case tappedCloseButton
         case onDisappear
     }
 
     init() {
         interactor.setupAVCaptureSession()
+        bind()
     }
+
+    deinit {
+        canseables.forEach { (cancellable) in
+            cancellable.cancel()
+        }
+    }
+
+    var previewLayer: CALayer {
+        return interactor.previewLayer!
+    }
+
+    @Published var photoImage: UIImage = UIImage()
+    @Published var showSheet: Bool = false
 
     func apply(inputs: Inputs) {
         switch inputs {
@@ -32,7 +42,9 @@ final class SimpleVideoCapturePresenter: ObservableObject {
                 interactor.startSettion()
             break
             case .tappedCameraButton:
-            break
+                interactor.takePhoto()
+            case .tappedCloseButton:
+                showSheet = false
             case .onDisappear:
               interactor.stopSettion()
         }
@@ -40,5 +52,18 @@ final class SimpleVideoCapturePresenter: ObservableObject {
 
     // MARK: Privates
     private let interactor = SimpleVideoCaptureInteractor()
+    private var canseables: [Cancellable] = []
+
+    private func bind() {
+        let photoImageObserver = interactor.$photoImage.sink { (image) in
+            if let image = image {
+                self.photoImage = image
+            }
+        }
+        canseables.append(photoImageObserver)
+
+        let showPhotoObserver = interactor.$showPhoto.assign(to: \.showSheet, on: self)
+        canseables.append(showPhotoObserver)
+    }
 }
 
