@@ -49,7 +49,7 @@ struct VideoView: UIViewControllerRepresentable {
         if let previewLayer = context.coordinator.previewLayer {
             viewController.view.layer.addSublayer(previewLayer)
             previewLayer.frame = viewController.view.layer.frame
-            print("context.coordinator.previewLayer?.frame: make \(context.coordinator.previewLayer?.frame)")
+            print("context.coordinator.previewLayer?.frame: make \(String(describing: context.coordinator.previewLayer?.frame))")
         }
 
         return viewController
@@ -57,7 +57,7 @@ struct VideoView: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         context.coordinator.previewLayer?.frame = uiViewController.view.layer.frame
-        print("context.coordinator.previewLayer?.frame: update \(context.coordinator.previewLayer?.frame)")
+        print("context.coordinator.previewLayer?.frame: update \(String(describing: context.coordinator.previewLayer?.frame))")
     }
     func makeCoordinator() -> VideoCoordinator {
         let coordinator = VideoCoordinator(parent: self)
@@ -69,8 +69,6 @@ struct VideoView: UIViewControllerRepresentable {
         coordinator.stopSession()
     }
 }
-
-extension AVCaptureVideoPreviewLayer: ObservableObject {}
 
 final class VideoCoordinator: NSObject {
     var parent: VideoView
@@ -116,7 +114,7 @@ final class VideoCoordinator: NSObject {
         dataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String:kCVPixelFormatType_32BGRA]
 
         if session.canAddOutput(dataOutput) {
-            session.addOutput(dataOutput) // -> ここをコメントアウトしたら、カメラボタンタップで画像を取得できなくなった。しかしカメラのライブ映像はそのまま取得できた。
+            session.addOutput(dataOutput)
         }
 
         session.commitConfiguration()
