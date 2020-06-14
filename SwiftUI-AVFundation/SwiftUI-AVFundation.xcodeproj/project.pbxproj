@@ -15,9 +15,6 @@
 		30A9300C248D001100A708AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30A9300A248D001100A708AA /* LaunchScreen.storyboard */; };
 		30A93017248D001100A708AA /* SwiftUI_AVFundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93016248D001100A708AA /* SwiftUI_AVFundationTests.swift */; };
 		30A93022248D001100A708AA /* SwiftUI_AVFundationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93021248D001100A708AA /* SwiftUI_AVFundationUITests.swift */; };
-		30A93030248D287F00A708AA /* AVFoundationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9302F248D287F00A708AA /* AVFoundationVM.swift */; };
-		30A93032248D289B00A708AA /* CALayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93031248D289B00A708AA /* CALayerView.swift */; };
-		30A93034248D28C900A708AA /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A93033248D28C900A708AA /* HomeView.swift */; };
 		30A930362494B03800A708AA /* SimpleVideoCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A930352494B03800A708AA /* SimpleVideoCaptureView.swift */; };
 		30A9303A2494B0F500A708AA /* SimpleVideoCapturePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A930392494B0F500A708AA /* SimpleVideoCapturePresenter.swift */; };
 		30A9303C2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9303B2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift */; };
@@ -55,9 +52,6 @@
 		30A9301D248D001100A708AA /* SwiftUI-AVFundationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-AVFundationUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A93021248D001100A708AA /* SwiftUI_AVFundationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_AVFundationUITests.swift; sourceTree = "<group>"; };
 		30A93023248D001100A708AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		30A9302F248D287F00A708AA /* AVFoundationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVFoundationVM.swift; sourceTree = "<group>"; };
-		30A93031248D289B00A708AA /* CALayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerView.swift; sourceTree = "<group>"; };
-		30A93033248D28C900A708AA /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		30A930352494B03800A708AA /* SimpleVideoCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCaptureView.swift; sourceTree = "<group>"; };
 		30A930392494B0F500A708AA /* SimpleVideoCapturePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCapturePresenter.swift; sourceTree = "<group>"; };
 		30A9303B2494B3DB00A708AA /* SimpleVideoCaptureInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleVideoCaptureInteractor.swift; sourceTree = "<group>"; };
@@ -119,9 +113,6 @@
 				30A9300A248D001100A708AA /* LaunchScreen.storyboard */,
 				30A9300D248D001100A708AA /* Info.plist */,
 				30A93007248D001100A708AA /* Preview Content */,
-				30A9302F248D287F00A708AA /* AVFoundationVM.swift */,
-				30A93031248D289B00A708AA /* CALayerView.swift */,
-				30A93033248D28C900A708AA /* HomeView.swift */,
 			);
 			path = "SwiftUI-AVFundation";
 			sourceTree = "<group>";
@@ -301,11 +292,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30A93032248D289B00A708AA /* CALayerView.swift in Sources */,
-				30A93030248D287F00A708AA /* AVFoundationVM.swift in Sources */,
 				30A93000248D001000A708AA /* AppDelegate.swift in Sources */,
 				30A9303A2494B0F500A708AA /* SimpleVideoCapturePresenter.swift in Sources */,
-				30A93034248D28C900A708AA /* HomeView.swift in Sources */,
 				30A930362494B03800A708AA /* SimpleVideoCaptureView.swift in Sources */,
 				30A93002248D001000A708AA /* SceneDelegate.swift in Sources */,
 				30A93004248D001000A708AA /* ContentView.swift in Sources */,

@@ -33,7 +33,6 @@ struct SimpleVideoCaptureView_Previews: PreviewProvider {
     }
 }
 
-
 struct CALayerView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     var caLayer: CALayer
